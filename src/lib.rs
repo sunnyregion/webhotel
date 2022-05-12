@@ -1,3 +1,9 @@
+//! This is documentation for the `webhotel` lib crate
+//! 
+//! Usage:
+//! ```
+//!     let web=webhotel::new();
+//! ```
 #[cfg(test)]
 mod tests {
     #[test]
