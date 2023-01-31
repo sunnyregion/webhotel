@@ -4,6 +4,35 @@
 //! ```
 //!     let web=webhotel::new();
 //! ```
+
+mod err;
+pub mod config;
+pub mod router;
+use dotenv::dotenv;
+use axum::{
+    http::StatusCode,
+    response::IntoResponse,
+};
+use std::{io};
+pub async  fn handle_error(_err: io::Error) -> impl IntoResponse {
+    (StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong...")
+}
+
+
+// use tracing_subscriber::prelude::*;
+
+pub fn new(website_name:&str)->config::Config{
+    if std::env::var_os("RUST_LOG").is_none() {
+        let v=format!("{}=debug",website_name);
+        std::env::set_var("RUST_LOG", v);
+    }
+    tracing_subscriber::fmt::init();
+    dotenv().ok();
+    config::Config::from_env().unwrap()
+    // config::Config::from_file("./webhotel.conf").unwrap()
+}
+
+
 #[cfg(test)]
 mod tests {
     #[test]
